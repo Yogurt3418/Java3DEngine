@@ -22,18 +22,36 @@ public class Point {
 
   }
 
+  /**
+   * 
+   * @return X Value for this point
+   */
   public double getX() {
     return x;
   }
 
+  /**
+   * 
+   * @return Y Value for this point
+   */
   public double getY() {
     return y;
   }
 
+  /**
+   * 
+   * @return Z Value for this point
+   */
   public double getZ() {
     return z;
   }
   
+/**
+ * 
+ * @param newX - New X coordinate
+ * @param newY - New Y coordinate
+ * @param newZ - New Z coordinate
+ */
   public void updatePoint(double newX, double newY, double newZ) {
 
     this.x = newX;
@@ -74,6 +92,14 @@ public class Point {
     return new Point((a.y * b.z) - (a.z * b.y), (a.z * b.x) - (a.x * b.z),
         (a.x * b.y) - (a.y * b.x), false);
 
+  }
+  
+  public static boolean comparePoints(Point A, Point B) {
+    
+    if((A.getX() == B.getX()) == (A.getY() == B.getY())){
+      return true;
+    }
+    return false;
   }
 
 }
