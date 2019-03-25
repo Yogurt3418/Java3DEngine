@@ -24,6 +24,7 @@ public class Line {
   }
 
   
+  
   public static ArrayList<Line> globalLines = new ArrayList<Line>();
   
   public Line(Point a, Point b) {
@@ -40,6 +41,21 @@ public class Line {
   public double length() {
     
     return new Point(this.a.getX()-this.b.getX(), this.a.getY()-this.b.getY(), this.a.getZ()-this.b.getZ(), false).length();
+    
+  }
+  
+  /**
+   * Can these lines be used to form a polygon?
+   * @param A
+   * @param B
+   * @return
+   */
+  public static boolean polygonCompatible(Line A, Line B) {
+    
+    if(Point.comparePoints(A.getA(), B.getA()) | Point.comparePoints(A.getA(), B.getB()) | Point.comparePoints(A.getB(), B.getA()) | Point.comparePoints(A.getB(), B.getB())) {
+      return true;
+    }
+    return false;
     
   }
   
