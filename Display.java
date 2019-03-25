@@ -33,6 +33,49 @@ public class Display extends Canvas {
 
   }
 
+  
+  //point, center, left
+  public static double angleLawOfCosinesXY(Point p1, Point p2, Point p3) {
+    
+    double b = Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2)
+        + Math.pow(p1.getY() - p2.getY(), 2));// cam center
+
+
+     double c = Math.sqrt(Math.pow(p1.getX() - p3.getX(), 2)
+        + Math.pow(p1.getY() - p3.getY(), 2));;// cam arm
+
+
+     double calcXYT = (1 + (b * b) - (c * c));
+     double calcXYB = (2 * b);
+
+     double calcXY = calcXYT / calcXYB;
+
+     //The problem appears to be with how it figures out what is on the left and what is on the right
+    return /*Math.signum((p1.getY() - p3.getY())) * */Math.acos(calcXY);
+    
+  }
+  
+  //point, center, top
+  public static double angleLawOfCosinesXZ(Point p1, Point p2, Point p3) {
+    
+    double b = Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2)
+        + Math.pow(p1.getZ() - p2.getZ(), 2));// cam center
+
+
+     double c = Math.sqrt(Math.pow(p1.getX() - p3.getX(), 2)
+        + Math.pow(p1.getZ() - p3.getZ(), 2));;// cam arm
+
+
+     double calcXZT = (1 + (b * b) - (c * c));
+     double calcXZB = (2 * b);
+
+     double calcXZ = calcXZT / calcXZB;
+
+     //The problem appears to be with how it figures out what is on the left and what is on the right
+    return /*Math.signum((p1.getZ() - p3.getZ())) * */ Math.acos(calcXZ);
+    
+  }
+  
 
   public void paint(Graphics g) {
 
@@ -62,7 +105,6 @@ public class Display extends Canvas {
     double calcXYB;
     double calcXY;
     
-    System.out.println("Surface! " + Surface.globalSurfaces.size());
     //For all surfaces
     for (Surface S : Surface.globalSurfaces) {
       
@@ -81,6 +123,7 @@ public class Display extends Canvas {
 
           // law of cosines c^2 = a^2+b^2-2ab*cos(c)
 
+          /*
            b = Math.sqrt(Math.pow(p.getX() - Camera.globalCameras.get(0).camCenter.getX(), 2)
               + Math.pow(p.getY() - Camera.globalCameras.get(0).camCenter.getY(), 2));// cam center
 
@@ -93,21 +136,20 @@ public class Display extends Canvas {
            calcXYB = (2 * b);
 
            calcXY = calcXYT / calcXYB;
+           */
+          
+          
+           //The problem appears to be with how it figures out what is on the left and what is on the right
+          double angleLeft = angleLawOfCosinesXY(p, Camera.globalCameras.get(0).camCenter, Camera.globalCameras.get(0).camLeft);
+          
 
-          double angleLeft = Math.signum((p.getY() - Camera.globalCameras.get(0).camLeft.getY()))
-              * Math.acos(calcXY);
-
-           //System.out.println(Math.toDegrees(angleLeft) + "| a:" + Math.round(a) + "| b:" +
-           //Math.round(b)
-           //+ "| c:" + Math.round(c) + "| calcXYT:" + calcXYT + "| calcB:" + calcXYB + "| calc:" +
-           //calcXY);
 
 
 
           ////////// XZ
 
           // law of cosines c^2 = a^2+b^2-2ab*cos(c)
-
+/*
           double e = Math.sqrt(Math.pow(p.getX() - Camera.globalCameras.get(0).camCenter.getX(), 2)
               + Math.pow(p.getZ() - Camera.globalCameras.get(0).camCenter.getZ(), 2));// cam center
 
@@ -119,36 +161,27 @@ public class Display extends Canvas {
           double calcXZB = (2 * e);
 
           double calcXZ = calcXZT / calcXZB;
-
+*/
           // I have no clue if this is really the best way to do this
-          double angleTop = Math.signum((p.getZ() - Camera.globalCameras.get(0).camTop.getZ()))
-              * Math.acos(calcXZ);
+          double angleTop = angleLawOfCosinesXZ(p, Camera.globalCameras.get(0).camCenter, Camera.globalCameras.get(0).camTop);
+          
 
-          // System.out.println(Math.toDegrees(angleTop) + "| a:" + Math.round(d) + "| b:" +
-          // Math.round(e)
-          // + "| c:" + Math.round(f) + "| calcXYT:" + calcXZT + "| calcB:" + calcXZB + "| calc:" +
-          // calcXZ);
-
-          // System.out.println("");
-
-          /////////// draw 
-
-          /*
-           * 
-           * //2d top down g.setColor(S.color); g.fillOval(this.getWidth() / 2 + (int) p.getX() -
-           * (dotSize / 2), this.getHeight() / 2 - (int) p.getY() - (dotSize / 2), dotSize,
-           * dotSize);
-           * 
-           */
-
-
-          p.onScreenX = (int) ((this.getWidth() / 2) + ((this.getWidth() / 2) * Math.toDegrees(angleLeft) / Camera.fovXY));
-          p.onScreenY = (int) ((this.getHeight() / 2) - ((this.getHeight() / 2) * Math.toDegrees(angleTop) / Camera.fovXZ));
+          //p.onScreenX = (int) ((this.getWidth() / 2) + ((this.getWidth() / 2) * Math.toDegrees(angleLeft) / (Camera.getFovXY()/2)));
+          //p.onScreenY = (int) ((this.getHeight() / 2) - ((this.getHeight() / 2) * Math.toDegrees(angleTop) / (Camera.getFovXZ()/2)));
+          
+          //90-(fov/2) - Left Side Limit
+          //90+(fov/2) - Right Side Limit
+          
+          
+          p.onScreenX = (int) (this.getWidth() * (( (Math.toDegrees(angleLeft) - (90 - (Camera.getFovXY()/2))) / (Camera.getFovXY()) )));
+          p.onScreenY = (int) (this.getHeight() * (( (Math.toDegrees(angleTop) - (90 - (Camera.getFovXZ()/2))) / (Camera.getFovXZ()) )));;
+          
+          //System.out.println(aa + "\n");
           
           // 3d
            g.setColor(Color.BLACK);
            g.fillOval(p.onScreenX, p.onScreenY,dotSize,dotSize);
-           g.drawString("XY:" + Math.toDegrees(angleLeft), p.onScreenX,p.onScreenY);
+           //g.drawString("XY:" + Math.toDegrees(angleLeft), p.onScreenX,p.onScreenY);
                //(int) (this.getWidth()/2 + (this.getWidth()/2 * Math.toDegrees(angleLeft)/Camera.fovXY)), 
                //(int) (this.getHeight()/2 - (this.getHeight()/2 * Math.toDegrees(angleTop)/Camera.fovXZ))
                //,dotSize,dotSize);
