@@ -9,9 +9,8 @@ public class SoftRender {
     
     /*
      * Known Issues:
-     * 1.Moving up and down seems to scale correctly, moving left and right does not
-     * 2.Angles cause points to get drawn on strange parts of the screen and do not scale correctly
-     * 3.A top and side angle isnt really needed, or at least not in the way i have them
+     * 1.Geometry directly behind the camera is rendered as though it is in front
+     *  (Add another line directly behind?)
      * 
      */
     
@@ -33,15 +32,15 @@ public class SoftRender {
     //Surface DEF = new Surface(new Point(20,10,5,false), new Point(20,10,-5,false), new Point(20,-10,5,false), new Point(20,-10,-5,false), Color.RED);
     
     //Front
-    Point A = new Point(10,10,10, false);
-    Point B = new Point(10,10,-10,false);
-    Point C = new Point(10,-10,10,false);
-    Point D = new Point(10,-10,-10,false);
+    Point A = new Point(20,10,10, false);
+    Point B = new Point(20,10,-10,false);
+    Point C = new Point(20,-10,10,false);
+    Point D = new Point(20,-10,-10,false);
     //Back
-    Point E = new Point(20,-10,10,false);
-    Point F = new Point(20,-10,-10,false);
-    Point G = new Point(20,10,10,false);
-    Point H = new Point(20,10,-10,false);
+    Point E = new Point(30,-10,10,false);
+    Point F = new Point(30,-10,-10,false);
+    Point G = new Point(30,10,10,false);
+    Point H = new Point(30,10,-10,false);
     
     Line AB = new Line(A,B);
     Line CD = new Line(C,D);
@@ -78,18 +77,18 @@ public class SoftRender {
     
     Canvas canvas = new Display(1024,576, "Grafix");
     
-      
-     for(int i = 0; i<1000;i++) {
+     /*
+     for(int i = 0; i<360;i++) {
        
        try {
          Thread.sleep(100);
-         mainCam.setCamPos(0,i,0);
-         mainCam.setXzAngle(0);
+         mainCam.setCamPos(0, 0, 0);
+         mainCam.setXyAngle(i);
          canvas.repaint();
          }catch(Exception e) {}
        
      }
-     
+     */
     
 }
   
