@@ -96,7 +96,7 @@ public class Point {
   
   public static boolean comparePoints(Point A, Point B) {
     
-    if((A.getX() == B.getX()) == (A.getY() == B.getY())){
+    if((A.getX() == B.getX()) & (A.getY() == B.getY())){
       return true;
     }
     return false;
