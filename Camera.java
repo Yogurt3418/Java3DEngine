@@ -7,6 +7,7 @@ public class Camera{
   Point camCenter;
   Point camLeft;
   Point camTop;
+  Point camBack;
   
   //IDEA : make a point in each direction, x,y,z
   
@@ -39,6 +40,8 @@ public class Camera{
     
     this.camTop = new Point(x+Math.sin(Math.toRadians(this.xzAngle)), y, z+Math.cos(Math.toRadians(this.xzAngle)), true);
     //this.camTop = new Point(x+Math.cos(Math.toRadians(this.xzAngle)), y, z+Math.sin(Math.toRadians(this.xzAngle)), true);
+    
+    this.camBack = new Point(x-Math.cos(Math.toRadians(this.xyAngle)), y-Math.sin(Math.toRadians(this.xyAngle)), z-Math.sin(Math.toRadians(this.xzAngle)), true);
     
     globalCameras.add(this);
   }
@@ -85,6 +88,7 @@ public class Camera{
     
     this.camLeft.updatePoint(this.camCenter.getX()+Math.sin(Math.toRadians(this.xyAngle)), this.camCenter.getY()+Math.cos(Math.toRadians(this.xyAngle)),this.camCenter.getZ());
     
+    this.camBack.updatePoint(this.camCenter.getX()-Math.cos(Math.toRadians(this.xyAngle)), this.camCenter.getY()-Math.sin(Math.toRadians(this.xyAngle)),this.camCenter.getZ());
     //this.camTop.updatePoint(this.camCenter.getX()+Math.cos(Math.toRadians(this.xzAngle)), this.camCenter.getY(), this.camCenter.getZ()+Math.sin(Math.toRadians(this.xzAngle)));
     
   }
@@ -111,7 +115,7 @@ public class Camera{
     
     this.camTop.updatePoint(this.camCenter.getX()+Math.sin(Math.toRadians(this.xzAngle)), this.camCenter.getY(), this.camCenter.getZ()+Math.cos(Math.toRadians(this.xzAngle)));
     
-    
+    this.camBack.updatePoint(this.camCenter.getX()-Math.cos(Math.toRadians(this.xzAngle)), this.camCenter.getY(), this.camCenter.getZ()-Math.sin(Math.toRadians(this.xzAngle)));
   }
   
   
